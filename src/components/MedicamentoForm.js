@@ -5,8 +5,7 @@ const MedicamentoForm = ({ pacientes, onMedicamentoSubmit }) => {
   const [pacienteSelecionado, setPacienteSelecionado] = useState('');
   const [medicamento, setMedicamento] = useState('');
   const [horario, setHorario] = useState('');
-  const [quantidade, setQuantidade] = useState('');
-  const [unidadeMedida, setUnidadeMedida] = useState('');
+  const [dosagem, setDosagem] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,71 +13,77 @@ const MedicamentoForm = ({ pacientes, onMedicamentoSubmit }) => {
       paciente: pacienteSelecionado,
       medicamento,
       horario,
-      quantidade,
-      unidadeMedida,
+      dosagem,
     };
+    onMedicamentoSubmit(newMedicamento);
     const medicamentos = JSON.parse(localStorage.getItem('medicamentos')) || [];
     localStorage.setItem('medicamentos', JSON.stringify([...medicamentos, newMedicamento]));
-    onMedicamentoSubmit(newMedicamento);
     setPacienteSelecionado('');
     setMedicamento('');
     setHorario('');
-    setQuantidade('');
-    setUnidadeMedida('');
+    setDosagem('');
   };
 
   return (
-    <div className="bg-gray-200 p-4 rounded shadow text-black mb-4">
-      <h2 className="text-2xl font-bold mb-4">Cadastro de Medicamentos</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="pacienteSelecionado" className="block text-sm font-medium text-gray-600">Paciente:</label>
+    <div className="bg-gradient-to-r from-gray-900 to-gray-700 p-8 rounded-md shadow-lg text-white mb-6">
+      <h2 className="text-3xl font-semibold mb-6">Novo Cadastro de Medicamento</h2>
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="pacienteSelecionado" className="block text-sm font-medium text-gray-300">Paciente:</label>
           <select
             id="pacienteSelecionado"
             value={pacienteSelecionado}
             onChange={(e) => setPacienteSelecionado(e.target.value)}
-            className="mt-1 p-2 w-full border rounded text-black"
+            className="mt-1 p-2 w-full border border-gray-500 rounded text-white bg-gray-700"
             required
           >
-            <option value="" disabled>Selecione o Paciente</option>
+            <option value="" disabled>Escolha o Paciente</option>
             {pacientes.map(paciente => (
-              <option className="text-black"classkey={paciente.nome} value={paciente.nome}>{paciente.nome}</option>
+              <option key={paciente.nome} value={paciente.nome}>{paciente.nome}</option>
             ))}
           </select>
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="medicamento" className="block text-sm font-medium text-gray-600">Medicamento:</label>
-          <input type="text" id="medicamento" value={medicamento} onChange={(e) => setMedicamento(e.target.value)} className="mt-1 p-2 w-full border rounded text-black" required />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="horario" className="block text-sm font-medium text-gray-600">Horários:</label>
-          <input type="time" id="horario" value={horario} onChange={(e) => setHorario(e.target.value)} placeholder="Ex: 08:00, 12:00, 18:00" className="mt-1 p-2 w-full border rounded text-black" required />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="quantidade" className="block text-sm font-medium text-gray-600">Quantidade:</label>
-          <input type="number" id="quantidade" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} className="mt-1 p-2 w-full border rounded text-black" required />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="unidadeMedida" className="block text-sm font-medium text-gray-600">Unidade de Medida:</label>
-          <select
-            id="unidadeMedida"
-            value={unidadeMedida}
-            onChange={(e) => setUnidadeMedida(e.target.value)}
-            className="mt-1 p-2 w-full border rounded text-black"
+        <div>
+          <label htmlFor="medicamento" className="block text-sm font-medium text-gray-300">Nome do Medicamento:</label>
+          <input
+            type="text"
+            id="medicamento"
+            value={medicamento}
+            onChange={(e) => setMedicamento(e.target.value)}
+            className="mt-1 p-3 w-full border border-gray-500 rounded text-gray-800 focus:outline-none focus:ring focus:border-blue-500"
             required
-          >
-            <option value="">Selecione a Unidade de Medida</option>
-            <option value="comprimidos">Comprimidos</option>
-            <option value="ml">Mililitros (ml)</option>
-            <option value="mg">Miligramas (mg)</option>
-          </select>
+          />
         </div>
 
-        <button type="submit" className="bg-indigo-700 text-white px-4 py-2 rounded hover:bg-blue-500">Cadastrar Medicamento</button>
+        <div>
+          <label htmlFor="horario" className="block text-sm font-medium text-gray-300">Horário de Administração:</label>
+          <input
+            type="time"
+            id="horario"
+            value={horario}
+            onChange={(e) => setHorario(e.target.value)}
+            className="mt-1 p-3 w-full border border-gray-500 rounded text-gray-800 focus:outline-none focus:ring focus:border-blue-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="dosagem" className="block text-sm font-medium text-gray-300">Dosagem:</label>
+          <input
+            type="text"
+            id="dosagem"
+            value={dosagem}
+            onChange={(e) => setDosagem(e.target.value)}
+            placeholder="Ex: 200ml, 2 comprimidos"
+            className="mt-1 p-3 w-full border border-gray-500 rounded text-gray-800 focus:outline-none focus:ring focus:border-blue-500"
+            required
+          />
+        </div>
+
+        <button type="submit" className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Cadastrar Medicamento
+        </button>
       </form>
     </div>
   );
